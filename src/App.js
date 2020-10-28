@@ -1,26 +1,72 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import * as BooksAPI from './utils/BooksAPI'
+import './App.css'
+import ListBooks from "./components/ListBooks";
+import { Route, Switch } from "react-router-dom";
+import Search from "./components/Search";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class BooksApp extends React.Component {
+    state = {
+        books: [],
+        showSearchPage: false,
+    }
+
+    updateBooks = () => (
+            BooksAPI.getAll().then((books) => {
+                this.setState(() => ({
+                    books
+                }));
+            })
+    )
+
+    componentDidMount() {
+        this.updateBooks()
+    }
+
+
+    handleChangeShelf = (bookId, shelf) => {
+        console.log('change', bookId, shelf)
+        BooksAPI
+            .update(bookId, shelf)
+            .then((result) => {
+                console.log('result', result)
+            })
+            .then(() => (
+                this.updateBooks()
+            ))
+    }
+
+
+    render() {
+        return (
+            <div className="app">
+                <Switch>
+                    <Route
+                        path="/search"
+                        render={() => (
+                            <Search
+                                currentBooks={this.state.books}
+                                onChangeShelf={this.handleChangeShelf}
+                            />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/"
+                        render={() => (
+                            <div className="list-books">
+                                <ListBooks
+                                    books={this.state.books}
+                                    onChangeShelf={this.handleChangeShelf}
+                                />
+                            </div>
+                        )}
+                    />
+                </Switch>
+
+            </div>
+        )
+    }
 }
 
-export default App;
+export default BooksApp
