@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import Bookshelfs from "./Bookshelfs";
 import {Link} from "react-router-dom";
 
+/**
+ * List of books of the authenticated user
+ */
 function ListBooks(props) {
 
     const {books, onChangeShelf} = props

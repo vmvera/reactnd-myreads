@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BookItem from "./BookItem";
 
+/**
+ * Set of shelves containing the books of the current user
+ */
 function Bookshelfs(props) {
 
     const {books, onChangeShelf} = props

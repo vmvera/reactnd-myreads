@@ -4,6 +4,9 @@ import * as BooksAPI from '../utils/BooksAPI'
 import BookItem from "./BookItem";
 import PropTypes from "prop-types";
 
+/**
+ * @description Search books from remote api to allow them to be added to a shelf
+ */
 class Search extends Component {
 
     state = {
@@ -12,6 +15,11 @@ class Search extends Component {
         first: true
     };
 
+    /**
+     * @description Get books from the remote api
+     * @param event change of shelf
+     * @param currentBooks List of books returned by the search api
+     */
     getBooks = (event, currentBooks) => {
         const query = event.target.value;
         this.setState({query});
@@ -20,8 +28,8 @@ class Search extends Component {
             BooksAPI.search(query.trim(), 20).then(books => {
                 if (books.length > 0) {
                     books.map(book => {
-                        let finded = currentBooks.find(f => book.id === f.id)
-                        book.shelf = (finded !== undefined) ? book.shelf = finded.shelf : book.shelf = 'none'
+                        const found = currentBooks.find(b => book.id === b.id)
+                        book.shelf = (found !== undefined) ? book.shelf = found.shelf : book.shelf = 'none'
                         return book
                     })
                     this.setState({newBooks: books, first: false})
@@ -32,9 +40,16 @@ class Search extends Component {
         } else this.setState({newBooks: []});
     }
 
-    handleClick(id, shelf) {
+    /**
+     * Handler for the change of shelf in a book
+     * @param id id of the book to be changed
+     * @param shelf destination shelf of the book
+     */
+    handleChange(id, shelf) {
         let index = this.state.newBooks.findIndex(b => b.id === id)
+        // Call the handler for the remote change of the shelf
         this.props.onChangeShelf(id, shelf);
+        // Change the shelf of the book in the search books list
         this.setState(({newBooks}) => ({
             newBooks: [
                 ...newBooks.slice(0,index),
@@ -76,7 +91,7 @@ class Search extends Component {
                                     <BookItem
                                         book={book}
                                         key={book.id}
-                                        onChangeShelf={(id, shelf) => this.handleClick(id, shelf)}/>
+                                        onChangeShelf={(id, shelf) => this.handleChange(id, shelf)}/>
                                 ))}
                             </ol>
                         </div>

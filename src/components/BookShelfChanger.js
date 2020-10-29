@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * Menu for change shelf of the current book
+ */
 function BookShelfChanger(props) {
 
     const {shelf, onChangeShelf} = props

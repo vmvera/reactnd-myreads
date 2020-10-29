@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BookShelfChanger from "./BookShelfChanger";
 
-
+/**
+ * Visualization of one book in the frid
+ */
 function BookItem(props) {
     const {book} = props
 
