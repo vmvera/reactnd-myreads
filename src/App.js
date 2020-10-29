@@ -35,7 +35,6 @@ class BooksApp extends React.Component {
      * @param shelf shelf to add the book
      */
     handleChangeShelf = (bookId, shelf) => {
-        console.log('change', bookId, shelf)
         BooksAPI
             .update(bookId, shelf)
             .then((result) => {
@@ -45,7 +44,6 @@ class BooksApp extends React.Component {
                 this.updateBooks()
             ))
     }
-
 
     render() {
         return (
